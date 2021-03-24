@@ -20,13 +20,44 @@ const addOnePokemon = pokemon => ({
 });
 
 export const getPokemonDetails = (id) => async dispatch => {
-  const res = await fetch({}`/api/pokemon/${id}`});
-if (res.ok) {
-  const pokemon = res.json();
-  dispatch(addOnePokemon(pokemon));
+  const res = await fetch(`/api/pokemon/${id}`);
+  if (res.ok) {
+    const pokemon = await res.json();
+    dispatch(addOnePokemon(pokemon));
+  }
 }
 
+export const createPokemon = (pokemon) => async dispatch => {
+  const { no, attack, defense, imageUrl, name, type, moves } = pokemon;
+  const res = await fetch(`/api/pokemon`, {
+    method: 'POST',
+    body: JSON.stringify({
+      no, attack, defense, imageUrl, name, type, moves
+    }),
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8"
+    }
+  });
+  const newPokemon = await res.json();
+  console.log(newPokemon);
+  dispatch(addOnePokemon(newPokemon));
+  return newPokemon;
+}
 
+export const editPokemon = (pokemon, id) => async dispatch => {
+  const { no, attack, defense, imageUrl, name, type, moves } = pokemon;
+  const res = await fetch(`/api/pokemon/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      id, no, attack, defense, imageUrl, name, type, moves
+    }),
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8"
+    }
+  });
+  const editedPokemon = await res.json();
+  dispatch(addOnePokemon(editedPokemon));
+  return editedPokemon;
 }
 
 export const getPokemon = () => async dispatch => {

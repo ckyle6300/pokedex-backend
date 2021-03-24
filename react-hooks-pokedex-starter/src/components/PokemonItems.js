@@ -1,10 +1,21 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getItems } from '../store/items';
 
 const PokemonItems = ({ pokemon, setEditItemId }) => {
   const items = useSelector((state) => {
     if (!pokemon.items) return null;
     return pokemon.items.map(itemId => state.items[itemId]);
   });
+  const browserId = useParams();
+  const id = parseInt(browserId.pokemonId, 10);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getItems(id))
+  }, [browserId])
 
   if (!items) {
     return null;
