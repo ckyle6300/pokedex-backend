@@ -1,5 +1,6 @@
 import { Route, Switch } from "react-router-dom";
 
+
 import PokemonBrowser from "./components/PokemonBrowser";
 
 const App = () => {

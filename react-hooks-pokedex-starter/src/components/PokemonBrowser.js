@@ -1,21 +1,30 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, Route, useParams } from 'react-router-dom';
+import { getPokemon } from '../store/pokemon'
 
 import PokemonDetail from './PokemonDetail';
 import CreatePokemonForm from './CreatePokemonForm';
 import Fab from './Fab';
 
 const PokemonBrowser = () => {
+  const dispatch = useDispatch();
   const { pokemonId } = useParams();
   const pokemon = useSelector(state => {
     return state.pokemon.list.map(pokemonId => state.pokemon[pokemonId]);
   });
   const [showForm, setShowForm] = useState(false);
 
+  useEffect(() => {
+    dispatch(getPokemon())
+  }, [])
+
   if (!pokemon) {
-    return null;
+    return null
   }
+
+
+
 
   return (
     <main>
@@ -50,7 +59,7 @@ const PokemonBrowser = () => {
         <CreatePokemonForm hideForm={() => setShowForm(false)} />
       ) : (
         <Route path="/pokemon/:pokemonId">
-          <PokemonDetail/>
+          <PokemonDetail />
         </Route>
       )}
     </main>
